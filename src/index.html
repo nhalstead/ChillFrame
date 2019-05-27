@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>ChillFrame</title>
+        <style>body, html {width: 100%; height: 100%; margin: 0; padding: 0}</style>
+    </head>
+    <body>
+        <script>
+            // Remove Extra Elements from the frame.
+            function afterLoad() {
+                var hide = document.getElementsByTagName('iframe')[0].contentWindow.document.body;
+                //var hide = eml.contentWindow.document.body;
+                hide.getElementsByClassName("ytp-chrome-top-buttons")[0].style = "display:none !important";
+                hide.getElementsByClassName("ytp-fullscreen-button")[0].style = "display:none !important";
+            }
+        </script>
+        <iframe width="100%" height="100%" onload="afterLoad()" src="https://www.youtube-nocookie.com/embed/SmbdY5FpRwA?autoplay=true&disablekb=0&enablejsapi=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </body>
+</html>
