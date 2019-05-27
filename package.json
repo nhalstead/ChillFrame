@@ -8,7 +8,7 @@
     "start": "electron src/main.js"
   },
   "author": "",
-  "license": "MIT",
+  "license": "The Unlicense",
   "dependencies": {
     "electron": "^1.8.8"
   }
