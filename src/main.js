@@ -1,3 +1,4 @@
+'use strict';
 const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 const path = require('path');
@@ -16,9 +17,9 @@ app.on('browser-window-created',function(e,window) {
 
 function createWindow () {
     // Create the browser window.
-    var params = {
+    let params = {
         width: 400,
-        height: 300,
+        height: 260,
         backgroundColor: '#000000',
         resizable: true,
         movable: true,

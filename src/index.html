@@ -5,12 +5,40 @@
     </head>
     <body>
         <script>
+            /**
+             * runDead allow you to run a function and let it fail without halting the processing of other tasks.
+             *
+             * @param {function} fn Function to Run.
+             */
+            function runDead(fn){
+                try {
+                    return fn();
+                }
+                catch(err) {
+                    console.warn("Failed to Execute.", fn);
+                }
+            }
+
             // Remove Extra Elements from the frame.
             function afterLoad() {
-                var hide = document.getElementsByTagName('iframe')[0].contentWindow.document.body;
-                //var hide = eml.contentWindow.document.body;
-                hide.getElementsByClassName("ytp-chrome-top-buttons")[0].style = "display:none !important";
-                hide.getElementsByClassName("ytp-fullscreen-button")[0].style = "display:none !important";
+                const hide = document.getElementsByTagName('iframe')[0].contentWindow.document.body;
+
+                runDead(() => { hide.getElementsByClassName("ytp-chrome-top-buttons")[0].style = "display:none !important"; }); // Hide Watch Later Button
+                runDead(() => { hide.getElementsByClassName("ytp-chrome-top-buttons")[1].style = "display:none !important";}); // Hide Share Button
+                runDead(() => { hide.getElementsByClassName("ytp-chrome-top-buttons")[2].style = "display:none !important";}); // Hide Show cards Button
+
+                runDead(() => { hide.getElementsByClassName("ytp-fullscreen-button")[0].style = "display:none !important"; }); // Hide Fullscreen Button
+                runDead(() => { hide.getElementsByClassName("ytp-size-button")[0].style = "display:none !important"; }); // Hide YouTube Size Select
+                runDead(() => { hide.getElementsByClassName("ytp-subtitles-button")[0].style = "display:none !important"; }); // Hide SubTitles Button (Just in case)
+                runDead(() => { hide.getElementsByClassName("ytp-title")[0].style = "display:none !important"; }); // Hide Title of the Video
+                runDead(() => { hide.getElementsByClassName("ytp-tooltip-bg")[0].style = "display:none !important"; }); // Hide Image Preview on Time Bar
+
+                setTimeout(() => {
+                    runDead(() => { hide.getElementsByClassName("branding-context-container-outer")[0].style = "display:none !important"; }); // Hide Subscribe Button from UI Icon
+                    runDead(() => { hide.getElementsByClassName("branding-img-container")[0].children[0].classList.remove("iv-click-target"); }) // Remove CSS Hover CSS from the Channel Icon
+                    // Click event cant be removed yet.
+                }, 800);
+
             }
         </script>
         <iframe width="100%" height="100%" onload="afterLoad()" src="https://www.youtube-nocookie.com/embed/SmbdY5FpRwA?autoplay=true&disablekb=0&enablejsapi=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
