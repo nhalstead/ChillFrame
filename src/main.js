@@ -11,28 +11,18 @@ let win;
  * @param {number} monitorNumber Monitor Index to Bind to.
  */
 function moveWindowTo(monitorNumber){
+    let displays = electron.screen.getAllDisplays();
+    console.log("Moving window to monitor " + monitorNumber);
 
-    if(monitorNumber == 0){
-        // Reevaluate the Menu Options
-
+    if (typeof displays[monitorNumber] !== 'undefined') {
+        const monitor = displays[monitorNumber].bounds,
+            width = monitor.x + monitor.width,
+            height = monitor.y + monitor.height;
+        win.setFullScreen(false);
+        win.unmaximize();
+        win.setPosition((width - 450), (height - 350));
+        win.setSize(400, 260);
     }
-    else {
-        monitorNumber++; // Make it so its not Zero Index.
-
-        let displays = electron.screen.getAllDisplays();
-        console.log("Moving window to monitor " + monitorNumber);
-
-        if (typeof displays[monitorNumber] !== 'undefined') {
-            const monitor = displays[monitorNumber].bounds,
-                width = monitor.x + monitor.width,
-                height = monitor.y + monitor.height;
-            win.setFullScreen(false);
-            win.unmaximize();
-            win.setPosition((width - 450), (height - 350));
-            win.setSize(400, 260);
-        }
-    }
-    return false;
 }
 
 function createWindow () {
@@ -88,11 +78,10 @@ function createWindow () {
     win.setMenu(menu);
     win.setMenuBarVisibility(false);
 
-    moveWindowTo(2);
-
     win.on('ready-to-show', function() {
         win.show();
         win.focus();
+        moveWindowTo(0);
     });
 
     //win.webContents.openDevTools();
