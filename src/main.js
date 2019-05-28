@@ -1,19 +1,39 @@
 'use strict';
 const electron = require('electron')
-const {app, BrowserWindow, Menu, ipcMain} = electron;
+const {app, BrowserWindow, Menu, MenuItem , ipcMain} = electron;
 const path = require('path');
 const url = require('url');
 let win;
 
-ipcMain.on('setSource', function(event, args){
-    // Set the page Source to a Set URL.
+/**
+ * moveWindowTo moves the window to a select monitor index.
+ *
+ * @param {number} monitorNumber Monitor Index to Bind to.
+ */
+function moveWindowTo(monitorNumber){
 
-});
+    if(monitorNumber == 0){
+        // Reevaluate the Menu Options
 
-// Disable all of the Default Menus
-app.on('browser-window-created',function(e,window) {
-    window.setMenu(null);
-});
+    }
+    else {
+        monitorNumber++; // Make it so its not Zero Index.
+
+        let displays = electron.screen.getAllDisplays();
+        console.log("Moving window to monitor " + monitorNumber);
+
+        if (typeof displays[monitorNumber] !== 'undefined') {
+            const monitor = displays[monitorNumber].bounds,
+                width = monitor.x + monitor.width,
+                height = monitor.y + monitor.height;
+            win.setFullScreen(false);
+            win.unmaximize();
+            win.setPosition((width - 450), (height - 350));
+            win.setSize(400, 260);
+        }
+    }
+    return false;
+}
 
 function createWindow () {
     // Create the browser window.
@@ -26,7 +46,9 @@ function createWindow () {
         minimizable: true,
         maximizable: true,
         closable: true,
-        alwaysOnTop: true
+        alwaysOnTop: true,
+        title: "Loading ChillFrame...",
+        show: false
     };
 
     // Spawn Window @ the set location, Bottom Right of the Screen.
@@ -51,6 +73,26 @@ function createWindow () {
         //  in an array if your app supports multi windows, this is the time
         //  when you should delete the corresponding element.
         win = null
+    });
+
+
+    let menu = new Menu();
+    let monitorLen = electron.screen.getAllDisplays().length
+    for(let i = 0; i < monitorLen; i++){
+        menu.append(new MenuItem({
+            label: 'Move to '+i+' Monitor',
+            accelerator: 'CmdOrCtrl+'+i,
+            click: () => { moveWindowTo(i); }
+        }));
+    }
+    win.setMenu(menu);
+    win.setMenuBarVisibility(false);
+
+    moveWindowTo(2);
+
+    win.on('ready-to-show', function() {
+        win.show();
+        win.focus();
     });
 
     //win.webContents.openDevTools();
