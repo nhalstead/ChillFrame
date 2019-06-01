@@ -23,6 +23,7 @@
             function afterLoad() {
                 const frame = document.getElementsByTagName('iframe')[0].contentWindow.document.body;
 
+                frame.style = "pointer-events: none;"; // Prevent Hover and Click Events.
                 
                 runDead(() => { frame.getElementsByClassName("ytp-chrome-top-buttons")[0].style = "display:none !important"; }); // frame Watch Later Button
                 runDead(() => { frame.getElementsByClassName("ytp-chrome-top-buttons")[1].style = "display:none !important";}); // frame Share Button
