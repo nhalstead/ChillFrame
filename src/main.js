@@ -1,13 +1,12 @@
 'use strict';
-const electron = require('electron');
-const {app, BrowserWindow, Menu, MenuItem , ipcMain, Tray } = electron;
-const path = require('path');
-const url = require('url');
-let win;
-let tray;
-const ICON_SOURCE = path.join(__dirname, 'icons8-windchill-48.png');
-const showTaskbarIcon = false;
-var showingWindow = false;
+const electron = require('electron'),
+    {app, BrowserWindow, Menu, MenuItem, Tray } = electron,
+    path = require('path'),
+    url = require('url'),
+    ICON_SOURCE = path.join(__dirname, 'icons8-windchill-48.png'),
+    showTaskBarIcon = false;
+let win, tray, showingWindow = false;
+
 
 /**
  * moveWindowTo moves the window to a select monitor index.
@@ -53,7 +52,7 @@ function createWindow () {
     win = new BrowserWindow(params);
     win.setTitle("");
     win.setIcon(ICON_SOURCE);
-    win.setSkipTaskbar(!showTaskbarIcon);
+    win.setSkipTaskbar(!showTaskBarIcon);
 
     // and load the index.html of the app.
     win.loadURL(url.format({
@@ -96,7 +95,7 @@ function createWindow () {
     });
 
     win.on('close', function (event) {
-        if(app.isQuiting == true) return;
+        if(app.isQuiting === true) return;
         event.preventDefault();
         win.hide();
         showingWindow = false;
@@ -104,7 +103,7 @@ function createWindow () {
 
     win.on('minimize', function (event) {
         event.preventDefault();
-        win.hide()
+        win.hide();
         showingWindow = false;
     });
 
@@ -114,7 +113,7 @@ function createWindow () {
 
 }
 
-app.on("before-quit", ev => {
+app.on("before-quit", () => {
 
 });
 
@@ -152,7 +151,7 @@ app.on('ready', function(){
     tray.setToolTip('ChillFrame');
     tray.setContextMenu(contextMenu);
     tray.on("double-click", function() {
-        if(showingWindow == false){
+        if(showingWindow === false){
             win.show();
             showingWindow = true;
         }
