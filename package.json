@@ -5,11 +5,21 @@
   "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron src/main.js"
+    "start": "electron src/main.js",
+    "build": "cd build && electron-packager ../src ChilFrame --platform=win32 --arch=x64 --overwrite --app-copyright=\"Copyright (c) 2019 NOAH HALSTEAD. All rights reserved.\" --icon ../src/icons8-windchill-48.ico --win32metadata.CompanyName=\"NOAH HALSTEAD\" --win32metadata.ProductName=\"ChillFrame\" --win32metadata.FileDescription=\"ChillFrame Video Player\""
+  },
+  "build": {
+    "appId": "chill.frame",
+    "win": {
+      "outputDirectory": "build"
+    }
   },
   "author": "",
   "license": "The Unlicense",
   "dependencies": {
     "electron": "^1.8.8"
+  },
+  "devDependencies": {
+    "electron-packager": "^13.1.1"
   }
 }

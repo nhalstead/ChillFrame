@@ -1,9 +1,13 @@
 'use strict';
-const electron = require('electron')
-const {app, BrowserWindow, Menu, MenuItem , ipcMain} = electron;
+const electron = require('electron');
+const {app, BrowserWindow, Menu, MenuItem , ipcMain, Tray } = electron;
 const path = require('path');
 const url = require('url');
 let win;
+let tray;
+const ICON_SOURCE = path.join(__dirname, 'icons8-windchill-48.png');
+const showTaskbarIcon = false;
+var showingWindow = false;
 
 /**
  * moveWindowTo moves the window to a select monitor index.
@@ -48,7 +52,8 @@ function createWindow () {
 
     win = new BrowserWindow(params);
     win.setTitle("");
-    win.setIcon(path.join(__dirname, 'icons8-windchill-48.png'));
+    win.setIcon(ICON_SOURCE);
+    win.setSkipTaskbar(!showTaskbarIcon);
 
     // and load the index.html of the app.
     win.loadURL(url.format({
@@ -67,7 +72,7 @@ function createWindow () {
 
 
     let menu = new Menu();
-    let monitorLen = electron.screen.getAllDisplays().length
+    let monitorLen = electron.screen.getAllDisplays().length;
     for(let i = 0; i < monitorLen; i++){
         menu.append(new MenuItem({
             label: 'Move to '+i+' Monitor',
@@ -75,21 +80,87 @@ function createWindow () {
             click: () => { moveWindowTo(i); }
         }));
     }
+    menu.append(new MenuItem({
+        label: 'Relaod Page',
+        accelerator: 'f5',
+        click: () => { win.reload(); }
+    }));
     win.setMenu(menu);
     win.setMenuBarVisibility(false);
 
     win.on('ready-to-show', function() {
         win.show();
+        showingWindow = true;
         win.focus();
         moveWindowTo(0);
     });
 
-    //win.webContents.openDevTools();
+    win.on('close', function (event) {
+        if(app.isQuiting == true) return;
+        event.preventDefault();
+        win.hide();
+        showingWindow = false;
+    });
+
+    win.on('minimize', function (event) {
+        event.preventDefault();
+        win.hide()
+        showingWindow = false;
+    });
+
+    win.on('show', function () {
+        tray.setHighlightMode('always');
+    });
+
 }
+
+app.on("before-quit", ev => {
+
+});
 
 // This method will be called when Electron has finished
 //  initialization and is ready to create browser windows.
 app.on('ready', function(){
+    tray = new Tray(ICON_SOURCE);
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: 'Show App', click: function () {
+                win.show();
+                showingWindow = true;
+            }
+        },
+        {
+            label: 'Quit', click: function () {
+                win = null;
+                app.isQuiting = true;
+                app.quit();
+            }
+        },
+        {type: "separator"},
+        {
+            label: 'Reload Page', click: function () {
+                win.reload();
+            }
+        },
+        {
+            label: 'Open Dev Tools', click: function () {
+                win.webContents.openDevTools({detach: true});
+            }
+        }
+
+    ]);
+    tray.setToolTip('ChillFrame');
+    tray.setContextMenu(contextMenu);
+    tray.on("double-click", function() {
+        if(showingWindow == false){
+            win.show();
+            showingWindow = true;
+        }
+        else {
+            win.hide();
+            showingWindow = false;
+        }
+    });
     createWindow();
 });
 
