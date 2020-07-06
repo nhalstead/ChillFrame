@@ -4,45 +4,7 @@
         <style>body, html {width: 100%; height: 100%; margin: 0; padding: 0}</style>
     </head>
     <body>
-        <script>
-            /**
-             * runDead allow you to run a function and let it fail without halting the processing of other tasks.
-             *
-             * @param {function} fn Function to Run.
-             */
-            function runDead(fn){
-                try {
-                    return fn();
-                }
-                catch(err) {
-                    console.warn("Failed to Execute.", fn);
-                }
-            }
-
-            // Remove Extra Elements from the frame.
-            function afterLoad() {
-                const frame = document.getElementsByTagName('iframe')[0].contentWindow.document.body;
-
-                frame.style = "pointer-events: none;"; // Prevent Hover and Click Events.
-                
-                runDead(() => { frame.getElementsByClassName("ytp-chrome-top-buttons")[0].style = "display:none !important"; }); // frame Watch Later Button
-                runDead(() => { frame.getElementsByClassName("ytp-chrome-top-buttons")[1].style = "display:none !important";}); // frame Share Button
-                runDead(() => { frame.getElementsByClassName("ytp-chrome-top-buttons")[2].style = "display:none !important";}); // frame Show cards Button
-
-                runDead(() => { frame.getElementsByClassName("ytp-fullscreen-button")[0].style = "display:none !important"; }); // frame Fullscreen Button
-                runDead(() => { frame.getElementsByClassName("ytp-size-button")[0].style = "display:none !important"; }); // frame YouTube Size Select
-                runDead(() => { frame.getElementsByClassName("ytp-subtitles-button")[0].style = "display:none !important"; }); // frame SubTitles Button (Just in case)
-                runDead(() => { frame.getElementsByClassName("ytp-title")[0].style = "display:none !important"; }); // frame Title of the Video
-                runDead(() => { frame.getElementsByClassName("ytp-tooltip-bg")[0].style = "display:none !important"; }); // frame Image Preview on Time Bar
-
-                setTimeout(() => {
-                    runDead(() => { frame.getElementsByClassName("branding-context-container-outer")[0].style = "display:none !important"; }); // frame Subscribe Button from UI Icon
-                    runDead(() => { frame.getElementsByClassName("branding-img-container")[0].children[0].classList.remove("iv-click-target"); }) // Remove CSS Hover CSS from the Channel Icon
-                    // Click event cant be removed yet.
-                }, 800);
-
-            }
-        </script>
-        <iframe width="100%" height="100%" onload="afterLoad()" src="https://www.youtube-nocookie.com/embed/bebuiaSKtU4?autoplay=true&disablekb=0&enablejsapi=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe id="videoFrame" width="100%" height="100%" src="data:text/html;base64,PCFET0NUWVBFIGh0bWw+PGh0bWw+IDxoZWFkPiA8dGl0bGVMb2FkaW5nLi4uL3RpdGxlPjxzdHlsZT5ib2R5e2JhY2tncm91bmQtY29sb3I6ICMxMjEyMTI7Y29sb3I6ICNGRkZGRkZ9LmxvYWRpbmc6YWZ0ZXJ7Y29udGVudDogIi4iO2FuaW1hdGlvbjogZG90cyAxcyBzdGVwcyg1LCBlbmQpIGluZmluaXRlO31Aa2V5ZnJhbWVzIGRvdHN7MCUsIDIwJXtjb2xvcjogcmdiYSgwLCAwLCAwLCAwKTsgdGV4dC1zaGFkb3c6IDAuMjVlbSAwIDAgcmdiYSgwLCAwLCAwLCAwKSwgMC41ZW0gMCAwIHJnYmEoMCwgMCwgMCwgMCk7fTQwJXtjb2xvcjogI0ZGRkZGRjsgdGV4dC1zaGFkb3c6IDAuMjVlbSAwIDAgcmdiYSgwLCAwLCAwLCAwKSwgMC41ZW0gMCAwIHJnYmEoMCwgMCwgMCwgMCk7fTYwJXt0ZXh0LXNoYWRvdzogMC4yNWVtIDAgMCB3aGl0ZSwgMC41ZW0gMCAwIHJnYmEoMCwgMCwgMCwgMCk7fTgwJSwgMTAwJXt0ZXh0LXNoYWRvdzogMC4yNWVtIDAgMCB3aGl0ZSwgMC41ZW0gMCAwIHdoaXRlO319PC9zdHlsZT4gPC9oZWFkPiA8Ym9keT4gPGRpdiBzdHlsZT0icGFkZGluZzogNzVweCA1MHB4IDEyNXB4OyI+IDxwIHN0eWxlPSJ0ZXh0LWFsaWduOiBjZW50ZXI7Ij4gPGJyLz4gPHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5OiB0YWhvbWE7IGZvbnQtc2l6ZTogMzJweDsiIGNsYXNzPSJsb2FkaW5nIj5Mb2FkaW5nPC9zcGFuPiA8L3A+PC9kaXY+PC9ib2R5PjwvaHRtbD4=" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <script src="window_script.js"></script>
     </body>
 </html>

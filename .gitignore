@@ -96,3 +96,4 @@ out/
 # Generated files
 .idea/**/contentModel.xml
 .idea/workspace.xml
+build/
