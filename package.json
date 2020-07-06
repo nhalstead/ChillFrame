@@ -1,25 +1,32 @@
 {
   "name": "chillframe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ChillFrame brings some of the most chill Youtube Music Feeds into one window.",
   "main": "src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron src/main.js",
-    "build": "cd build && electron-packager ../src ChilFrame --platform=win32 --arch=x64 --overwrite --app-copyright=\"Copyright (c) 2019 NOAH HALSTEAD. All rights reserved.\" --icon ../src/icons8-windchill-48.ico --win32metadata.CompanyName=\"NOAH HALSTEAD\" --win32metadata.ProductName=\"ChillFrame\" --win32metadata.FileDescription=\"ChillFrame Video Player\""
+    "pack": "electron-builder",
+    "build": "electron-builder"
   },
   "build": {
-    "appId": "chill.frame",
-    "win": {
-      "outputDirectory": "build"
-    }
+    "appId": "nhalstead.chillFrame",
+    "productName": "Chill Frame",
+    "directories": {
+      "output": "build",
+      "buildResources": "src/assets"
+    },
+    "extraFiles": [
+      "src/assets"
+    ]
   },
-  "author": "",
+  "author": "Noah Halstead",
   "license": "The Unlicense",
   "dependencies": {
-    "electron": "^8.2.1"
+    "electron": "^8.2.1",
+    "electron-updater": "^4.0.0"
   },
   "devDependencies": {
-    "electron-packager": "^13.1.1"
+    "electron": "^1.8.8",
+    "electron-builder": "^21.2.0"
   }
 }
