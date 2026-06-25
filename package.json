@@ -23,10 +23,10 @@
   "license": "The Unlicense",
   "dependencies": {
     "electron": "^9.4.0",
-    "electron-updater": "^4.0.0"
+    "electron-updater": "^4.6.5"
   },
   "devDependencies": {
     "electron": "^9.4.0",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^26.15.3"
   }
 }
